@@ -1,9 +1,16 @@
-import React, { Fragment, Component } from 'react'
+import React, { Fragment, Component ,useRef} from 'react'
 import Spinner from '../layout/Spinner'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
+import {exportComponentAsPNG } from 'react-component-export-image';
 
 export class User extends Component {
+
+    constructor(props) {
+        super(props);
+        this.componentRef = React.createRef();
+      }
+
     componentDidMount()
     {
         this.props.getUser(this.props.match.params.login)
@@ -48,7 +55,7 @@ export class User extends Component {
                     hireable: {''}
                     {hireable? <i className= "fas fa-check text-success"/>:
                     <i className= "fas fa-times-circle text-danger"/>}
-                    <div className="card grid-2">
+                    <div className="card grid-2" ref={this.componentRef}>
                         <div className="all-center">
                             <img 
                             src= {avatar_url} 
@@ -66,6 +73,10 @@ export class User extends Component {
                             <a href = {html_url}
                              className = "btn btn-dark my-1">Visit Github Profile
                             </a>
+                            <button className="btn btn-dark btn" 
+                            onClick={() => exportComponentAsPNG(this.componentRef)}>
+                                Export Fig
+                            </button>
                             <ul>
                                 <li>
                                     {login && <Fragment>
