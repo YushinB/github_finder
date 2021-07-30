@@ -1,6 +1,8 @@
-import React, { Fragment, Component ,useRef} from 'react'
+import React, { Fragment, Component} from 'react'
 import Spinner from '../layout/Spinner'
 import PropTypes from 'prop-types'
+import Repos from '../repos/Repos'
+
 import {Link} from 'react-router-dom'
 import {exportComponentAsPNG } from 'react-component-export-image';
 
@@ -14,12 +16,15 @@ export class User extends Component {
     componentDidMount()
     {
         this.props.getUser(this.props.match.params.login)
+        this.props.getUserRepos(this.props.match.params.login)
     }
 
     static propTypes = {
         loading: PropTypes.bool.isRequired,
         user: PropTypes.object.isRequired,
-        getUser: PropTypes.func.isRequired
+        getUser: PropTypes.func.isRequired,
+        getUserRepos: PropTypes.func.isRequired,
+        Repos: PropTypes.array.isRequired,
     }
 
     render() {
@@ -39,7 +44,7 @@ export class User extends Component {
             hireable
         } = this.props.user;
 
-        const {loading} = this.props;
+        const {loading,repos} = this.props;
 
         if(loading)
         {
@@ -102,6 +107,7 @@ export class User extends Component {
                         <div className="badge badge-white">Public Repos: {public_repos}</div>
                         <div className="badge badge-dark">Public Gists: {public_gists}</div>
                     </div>
+                    <Repos repos = {repos}/>
                 </Fragment>
             )
         }
